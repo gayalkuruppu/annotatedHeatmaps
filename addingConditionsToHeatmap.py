@@ -98,23 +98,41 @@ def annotate_heatmap(im, data=None, valfmt="{x:.2f}", textcolors=["black", "whit
     return texts
 
 
-data = pd.read_csv('/home/gayal/Downloads/Availability - nlog2n (1).csv')
+data = pd.read_csv('/home/gayal/Downloads/Availability of Micro services based system with replicates - nlog2n.csv')
 dataFiltered = data.iloc[27:38, 1:8]
 dataNumpy = dataFiltered.to_numpy()
 dataInt = dataNumpy.astype('int8')
 
-no_of_nodes = ["Monolithic System", "2", "4", "8","16", "32", "64","128","256","512","1024"]
-software_class = ["A_SW class 1", "A_SW class 2", "A_SW class 3","A_SW class 4", "A_SW class 5", "A_SW class 6", "A_SW class 7"]
+dimx = dataInt.shape[0]
+dimy = dataInt.shape[1]
+
+data2Filtered = data.iloc[53:64, 1:8]
+data2Numpy = data2Filtered.to_numpy()
+data2Int = data2Numpy.astype('int8')
+outArray = np.empty([dimx, dimy], dtype=str)
+
+outArray = dataInt*data2Int
+
+# for i in range(dimx):
+#     for j in range(dimy):
+#         if (dataInt[i][j] == dataInt[i][j]):
+#             if (data2Int[i][j] == 1):
+#                 outArray[i][j] = outArray[i][j]+'y'
+
+no_of_nodes = ["Monolithic System", "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024"]
+software_class = ["A_SW class 1", "A_SW class 2", "A_SW class 3", "A_SW class 4", "A_SW class 5", "A_SW class 6",
+                  "A_SW class 7"]
 
 fig, ax = plt.subplots()
 
-im, cbar = heatmap(dataInt, no_of_nodes, software_class, ax=ax,cmap="YlGn", cbarlabel="Overall Availability Class")
+im, cbar = heatmap(outArray, no_of_nodes, software_class, ax=ax,cmap="YlGn", cbarlabel="Overall Availability Class")
 
 texts = annotate_heatmap(im, valfmt="{x}")
 # texts = annotate_heatmap(im, valfmt="t")
 plt.ylabel("No of nodes")
 plt.xlabel("f(N) = NlogN")
-plt.title("Software Availability Classes")
+plt.title("Software Availability Classes, If it has improved it's class; else 0")
+
 
 fig.tight_layout()
 plt.show()
