@@ -6,7 +6,7 @@ serviceRates = list(map(int, input('Enter the service rates seperated by commas 
 k = len(serviceRates)  # number of servers
 p = 1/k
 ET = np.zeros((m, k))
-conAxis = np.arange(1, m+1)
+lm = np.arange(1, m+1)
 
 for i in range(k):
     ET[0][i] = 1/serviceRates[i]
